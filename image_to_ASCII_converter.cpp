@@ -32,10 +32,10 @@ public:
         if (lum >= 224) return '^';
         if (lum >= 192) return ';';
         if (lum >= 160) return '~';
-        if (lum >= 128) return 'n';
-        if (lum >= 96) return 'X';
-        if (lum >= 64) return '#';
-        if (lum >= 32) return '&';
+        if (lum >= 128) return ']';
+        if (lum >= 96) return '*';
+        if (lum >= 64) return 'C';
+        if (lum >= 32) return '#';
         if (lum >= 0) return '$';
     }
 
@@ -68,8 +68,8 @@ string normalize_int(int num, int len) {
     return to_string(num) + (string("+") * len);
 }
 
-void printASCIIimage(vector<vector<Pixel>> matrix, bool flag_is_pixelart = false, 
-    bool flag_is_table = true, byte color = 15) {
+void printASCIIimage(vector<vector<Pixel>> matrix, bool flag_is_colorful = true,
+    bool flag_is_pixelart = false, bool flag_is_table = true, byte color = 15) {
     int enumerate_row = 0, enumerate_col = 0;
     cout << "\n\n\n";
     SetConsoleTextAttribute(pen, color);
@@ -80,11 +80,11 @@ void printASCIIimage(vector<vector<Pixel>> matrix, bool flag_is_pixelart = false
             switch (flag_is_pixelart)
             {
             case true:
-                setBackgroundColor(pxl.R, pxl.G, pxl.B);
+                if (flag_is_colorful) setBackgroundColor(pxl.R, pxl.G, pxl.B);
                 cout << ' ';
                 break;
             case false:
-                setTextColor(pxl.R, pxl.G, pxl.B);
+                if (flag_is_colorful) setTextColor(pxl.R, pxl.G, pxl.B);
                 cout << pxl.as_ASCII();
                 break;
             }
@@ -135,7 +135,8 @@ void print_matrix_stat(vector<vector<Pixel>> matrix) {
 
 int main()
 {
-    Mat image = imread("C:/Users/Kaverin Vladimir/Pictures/cat.jpg");
+    Mat image = imread("E:/MyPrograms/C++/image_to_ASCII_converter/x64/Debug/images/foxl.jpg");
+    //setBackgroundColor(255, 255, 255);
 
     if (image.empty())
     {
@@ -146,7 +147,7 @@ int main()
 
     cout << image.size() << "\n";
 
-    resize(image, image, Size(180, 50)); //шаблоны: квадрат - 120, 50, во весь экран - 200, 50
+    resize(image, image, Size(120, 50)); //шаблоны: квадрат - 120, 50, во весь экран - 200, 50
     Mat flat = image.reshape(1, image.total() * image.channels());
     cout << "rows: " << image.rows << " cols: " << image.cols << "\n";
 
